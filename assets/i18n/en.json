@@ -1,0 +1,26 @@
+{
+  "common": {
+    "add": "Add",
+    "addPerson": "Add person",
+    "cancel": "Cancel",
+    "confirmRemoval": "Remove person '{{name}}'?",
+    "memorySlot": "Memory slot",
+    "name": "Name",
+    "offline": "Offline",
+    "remove": "Remove",
+    "title": "Monthly planning"
+  },
+  "components": {
+    "SwapEntryBottomSheetComponent": {
+      "sourceInfo": " (Source)"
+    }
+  },
+  "enums": {
+    "EditMode": {
+      "MONTH_MANAGEMENT": "Manage months",
+      "PERSON_MANAGEMENT": "Manage persons",
+      "PLANNING": "Planning",
+      "READ_ONLY": "Read-only"
+    }
+  }
+}
