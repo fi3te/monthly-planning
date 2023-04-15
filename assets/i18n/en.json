@@ -4,6 +4,7 @@
     "addPerson": "Add person",
     "cancel": "Cancel",
     "confirmRemoval": "Remove person '{{name}}'?",
+    "imprint": "Imprint",
     "memorySlot": "Memory slot",
     "name": "Name",
     "offline": "Offline",
