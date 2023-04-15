@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <div class="mp-form-field-wrapper">
+    <mat-form-field appearance="fill">
+      <mat-label>{{ data.inputLabel }}</mat-label>
+      <input matInput [(ngModel)]="value" cdkFocusInitial>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="cancel()">{{ data.cancel }}</button>
+  <button mat-button color="accent" [mat-dialog-close]="value">{{ data.confirm }}</button>
+</div>

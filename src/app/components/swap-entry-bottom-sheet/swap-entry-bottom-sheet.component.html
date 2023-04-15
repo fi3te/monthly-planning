@@ -1,0 +1,8 @@
+<mat-action-list>
+  <ng-container *ngFor="let group of data.groups; let groupIndex = index">
+    <button mat-list-item (click)="dismiss(groupIndex, entryIndex)" *ngFor="let entry of group.entries; let entryIndex = index">
+      <span matListItemTitle>{{ entry.name }} {{ isSource(groupIndex, entryIndex) ? ('components.SwapEntryBottomSheetComponent.sourceInfo' | transloco) : '' }}</span>
+      <span matLine>{{ group.date | monthYear }}</span>
+    </button>
+  </ng-container>
+</mat-action-list>

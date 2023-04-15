@@ -1,0 +1,14 @@
+<mat-button-toggle-group class="mp-toggle-group" [value]="value" (change)="valueChange.emit($event.value)">
+  <mat-button-toggle [value]="EditMode.READ_ONLY" [matTooltip]="'enums.EditMode.READ_ONLY' | transloco">
+    <mat-icon fontIcon="lock"></mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle [value]="EditMode.PLANNING" [matTooltip]="'enums.EditMode.PLANNING' | transloco">
+    <mat-icon fontIcon="touch_app"></mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle [value]="EditMode.PERSON_MANAGEMENT" [matTooltip]="'enums.EditMode.PERSON_MANAGEMENT' | transloco">
+    <mat-icon fontIcon="manage_accounts"></mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle [value]="EditMode.MONTH_MANAGEMENT" [matTooltip]="'enums.EditMode.MONTH_MANAGEMENT' | transloco">
+    <mat-icon fontIcon="edit_calendar"></mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>

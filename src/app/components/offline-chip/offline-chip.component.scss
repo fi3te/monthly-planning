@@ -1,0 +1,9 @@
+.mp-white {
+  color: white;
+}
+
+mat-chip-option ::ng-deep .mat-mdc-chip-action-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
