@@ -6,7 +6,7 @@
     <mat-icon>arrow_back</mat-icon>
   </button>
   <span>{{ 'common.title' | transloco }}</span>
-  <div class="mp-horizontal-placeholder"></div>
+  <div class="mp-flex-placeholder"></div>
   <mp-offline-chip></mp-offline-chip>
 </mat-toolbar>
 
@@ -16,6 +16,15 @@
       <mat-button-toggle [value]="SlotIdentifier.A" [checked]="groupStoreService.slot === SlotIdentifier.A">{{ 'common.memorySlot' | transloco }} A</mat-button-toggle>
       <mat-button-toggle [value]="SlotIdentifier.B" [checked]="groupStoreService.slot === SlotIdentifier.B">{{ 'common.memorySlot' | transloco }} B</mat-button-toggle>
     </mat-button-toggle-group>
+    <div class="mp-flex-placeholder"></div>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ 'common.imprint' | transloco}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <img class="mp-imprint-image" src="assets/img/imprint.png">
+    </mat-expansion-panel>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -23,7 +32,7 @@
       <div class="mp-row mp-edit-mode-row">
         <mp-edit-mode-selection [(value)]="editMode"></mp-edit-mode-selection>
         <ng-container *ngIf="(groupStoreService.dirty$ | async) as dirty">
-          <div class="mp-horizontal-placeholder"></div>
+          <div class="mp-flex-placeholder"></div>
           <button mat-icon-button color="accent" [disabled]="inProgress" (click)="reset()">
             <mat-icon>undo</mat-icon>
           </button>
@@ -52,7 +61,7 @@
           <h4>
             {{ group.date | monthYear }}
           </h4>
-          <div class="mp-horizontal-placeholder"></div>
+          <div class="mp-flex-placeholder"></div>
           <button mat-icon-button color="accent" (click)="addPerson(groupIndex)" *ngIf="isUserManagement()">
             <mat-icon>add</mat-icon>
           </button>
@@ -74,7 +83,7 @@
             <div>
               {{ entry.name }}
             </div>
-            <div class="mp-horizontal-placeholder"></div>
+            <div class="mp-flex-placeholder"></div>
             <div>
               <button mat-icon-button color="accent" (click)="removePerson(groupIndex, entryIndex)" *ngIf="isUserManagement()">
                 <mat-icon>remove</mat-icon>

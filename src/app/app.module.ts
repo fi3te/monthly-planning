@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppTranslocoModule } from './app-transloco.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { OfflineChipComponent } from './components/offline-chip/offline-chip.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { OfflineChipComponent } from './components/offline-chip/offline-chip.com
     MatInputModule,
     MatTooltipModule,
     MatSidenavModule,
+    MatExpansionModule,
     FormsModule,
     RouterModule.forRoot([]),
     HttpClientModule,
