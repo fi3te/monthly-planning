@@ -4,7 +4,7 @@ import { Entry } from '../../models/entry';
 import { Group, groupId } from '../../models/group';
 import { createMonthYear, nextMonthYear, previousMonthYear } from '../../models/month-year';
 import { SlotIdentifier } from '../../models/slot-identifier';
-import { Slot } from 'src/app/models/slot';
+import { Slot } from '../../models/slot';
 
 @Injectable({
   providedIn: 'root'

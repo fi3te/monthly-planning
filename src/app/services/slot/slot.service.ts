@@ -1,13 +1,15 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { createMonthYear, nextMonthYear, previousMonthYear } from '../../models/month-year';
-import { Slot } from '../../models/slot';
+import { Observable, OperatorFunction, catchError, of } from 'rxjs';
+import { Config } from '../../models/config';
+import { Slot, deepCopy } from '../../models/slot';
 import { SlotIdentifier } from '../../models/slot-identifier';
+import { createMonthYear, nextMonthYear } from '../../models/month-year';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpStatusCode } from '@angular/common/http';
+import { stringToBase64 } from '../../util/base64';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SlotService {
+class DemoSlotService {
 
   private slotA: Slot;
   private slotB: Slot;
@@ -17,45 +19,28 @@ export class SlotService {
       identifier: SlotIdentifier.A,
       groups: [
         {
-          date: previousMonthYear(createMonthYear(new Date())),
-          entries: [{ name: "Cinderella" }]
-        },
-        {
           date: createMonthYear(new Date()),
-          entries: [{ name: "Hänsel" }, { name: "Gretel" }]
+          entries: [{ name: "Hänsel" }]
         },
         {
           date: nextMonthYear(createMonthYear(new Date())),
-          entries: [{ name: "Schneewittchen" }]
+          entries: [{ name: "Gretel" }]
         }
       ]
     };
     this.slotB = {
       identifier: SlotIdentifier.B,
-      groups: [
-        {
-          date: previousMonthYear(createMonthYear(new Date())),
-          entries: [{ name: "Ash" }]
-        },
-        {
-          date: createMonthYear(new Date()),
-          entries: [{ name: "Misty" }]
-        },
-        {
-          date: nextMonthYear(createMonthYear(new Date())),
-          entries: [{ name: "Rocko" }]
-        }
-      ]
+      groups: []
     };
   }
 
   get$(slot: SlotIdentifier): Observable<Slot> {
-    return of(slot === SlotIdentifier.A ? this.copy(this.slotA) : this.copy(this.slotB));
+    return of(slot === SlotIdentifier.A ? deepCopy(this.slotA) : deepCopy(this.slotB));
   };
 
   latest$(): Observable<Slot> {
     return of(
-      this.copy(this.slotA)
+      deepCopy(this.slotA)
     );
   }
 
@@ -67,14 +52,82 @@ export class SlotService {
     }
     return of();
   }
+}
 
-  private copy(slot: Slot): Slot {
-    return {
-      identifier: slot.identifier,
-      groups: [...slot.groups.map(group => ({
-        date: group.date,
-        entries: [...group.entries.map(entry => ({ name: entry.name }))]
-      }))]
+@Injectable({
+  providedIn: 'root'
+})
+export class SlotService {
+
+  private config?: Config;
+  private demo: DemoSlotService;
+
+  constructor(private httpClient: HttpClient) {
+    this.demo = new DemoSlotService();
+  }
+
+  setConfig(config?: Config): void {
+    this.config = config;
+  }
+
+  get$(slot: SlotIdentifier): Observable<Slot> {
+    if (!this.config) {
+      return this.demo.get$(slot);
+    }
+
+    return this.httpClient
+      .get<Slot>(this.config.url, this.prepareOptions(this.config, slot))
+      .pipe(
+        this.catch404UseEmptySlot(slot)
+      );
+  };
+
+  latest$(): Observable<Slot> {
+    if (!this.config) {
+      return this.demo.latest$();
+    }
+
+    return this.httpClient
+      .get<Slot>(this.config.url, this.prepareOptions(this.config))
+      .pipe(
+        this.catch404UseEmptySlot(SlotIdentifier.A)
+      );
+  }
+
+  put$(slot: Slot): Observable<void> {
+    if (!this.config) {
+      return this.demo.put$(slot);
+    }
+    return this.httpClient
+      .put<void>(this.config.url, slot, this.prepareOptions(this.config, slot.identifier));
+  }
+
+  private catch404UseEmptySlot(slot: SlotIdentifier): OperatorFunction<Slot, Slot> {
+    return catchError((error: HttpErrorResponse) => {
+      if (error.status == HttpStatusCode.NotFound) {
+        return of({
+          identifier: slot,
+          groups: []
+        });
+      }
+      throw error;
+    })
+  }
+
+  private prepareOptions(config: Config, slot?: SlotIdentifier) {
+    let options = {
+      headers: new HttpHeaders({
+        "Authorization": "Basic " + stringToBase64(config.authUsername + ':' + config.authPassword)
+      })
     };
+    if (!slot) {
+      return options;
+    }
+    return {
+      ...options,
+      params: {
+        "slot": slot
+      }
+    }
   }
 }

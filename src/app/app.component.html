@@ -7,7 +7,7 @@
   </button>
   <span>{{ 'common.title' | transloco }}</span>
   <div class="mp-flex-placeholder"></div>
-  <mp-offline-chip></mp-offline-chip>
+  <mp-offline-chip *ngIf="!online"></mp-offline-chip>
 </mat-toolbar>
 
 <mat-sidenav-container>

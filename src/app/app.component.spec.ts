@@ -8,9 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from './app.component';
 import { getTranslocoTestingModule } from './transloco-testing';
+import { SlotService } from './services/slot/slot.service';
 
 describe('AppComponent', () => {
 
@@ -45,13 +46,21 @@ describe('AppComponent', () => {
           useValue: {}
         },
         {
+          provide: Router,
+          useValue: {}
+        },
+        {
           provide: MatBottomSheet,
           useValue: {}
         },
         {
           provide: MatDialog,
           useValue: {}
-        }
+        },
+        {
+          provide: SlotService,
+          useValue: {}
+        },
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

@@ -5,13 +5,14 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
-import { Subject, concat } from 'rxjs';
-import { finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { finalize, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { InputDialogComponent } from './components/input-dialog/input-dialog.component';
 import { SwapEntryBottomSheetComponent, SwapEntryInputData, SwapEntryOutputData } from './components/swap-entry-bottom-sheet/swap-entry-bottom-sheet.component';
+import { Config, fromBase64Url } from './models/config';
 import { EditMode } from './models/edit-mode';
 import { Entry } from './models/entry';
 import { SlotIdentifier } from './models/slot-identifier';
@@ -34,13 +35,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   SlotIdentifier = SlotIdentifier;
 
+  online = false;
   opened = false;
-
   editMode = EditMode.READ_ONLY;
-
   inProgress = false;
 
-  private reload$ = new Subject<SlotIdentifier>();
+  private reload$ = new Subject<SlotIdentifier | null>();
   private destroy$ = new Subject<void>();
   private mobileQuery: MediaQueryList;
   private mobileQueryListener: () => void;
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private route: ActivatedRoute,
+    private router: Router,
     private matBottomSheet: MatBottomSheet,
     private matDialog: MatDialog,
     private translocoService: TranslocoService,
@@ -61,15 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.queryParams
-      .subscribe((params) => {
-        console.log(params['data']);
-        // TODO
-      }
-      );
-
     this.reload$.pipe(
-      startWith(null),
       switchMap((slot) => slot
         ? this.slotService.get$(slot)
         : this.slotService.latest$()),
@@ -78,6 +71,21 @@ export class AppComponent implements OnInit, OnDestroy {
       this.groupStoreService.init(slot);
       this.inProgress = false;
     });
+
+    this.route.fragment
+      .subscribe((fragment) => {
+        let config: Config | undefined = undefined;
+        if (fragment) {
+          try {
+            config = fromBase64Url(fragment);
+          } catch (error) {
+            this.router.navigate([]);
+          }
+        }
+        this.online = !!config;
+        this.slotService.setConfig(config);
+        this.reset();
+      });
   }
 
   ngOnDestroy(): void {
@@ -103,7 +111,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   reset(): void {
     this.inProgress = true;
-    this.reload$.next(this.groupStoreService.slot!);
+    this.reload$.next(this.groupStoreService.slot);
   }
 
   drop(event: CdkDragDrop<Entry[]>) {
