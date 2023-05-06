@@ -8,7 +8,7 @@ import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { Subject } from 'rxjs';
-import { finalize, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, finalize, switchMap, takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { InputDialogComponent } from './components/input-dialog/input-dialog.component';
 import { SwapEntryBottomSheetComponent, SwapEntryInputData, SwapEntryOutputData } from './components/swap-entry-bottom-sheet/swap-entry-bottom-sheet.component';
@@ -63,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.reload$.pipe(
+      debounceTime(100),
       switchMap((slot) => slot
         ? this.slotService.get$(slot)
         : this.slotService.latest$()),
