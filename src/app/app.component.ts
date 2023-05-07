@@ -14,7 +14,6 @@ import { InputDialogComponent } from './components/input-dialog/input-dialog.com
 import { SwapEntryBottomSheetComponent, SwapEntryInputData, SwapEntryOutputData } from './components/swap-entry-bottom-sheet/swap-entry-bottom-sheet.component';
 import { Config, fromBase64Url } from './models/config';
 import { EditMode } from './models/edit-mode';
-import { Entry } from './models/entry';
 import { SlotIdentifier } from './models/slot-identifier';
 import { GroupStoreService } from './services/group-store/group-store.service';
 import { SlotService } from './services/slot/slot.service';
@@ -115,7 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.reload$.next(this.groupStoreService.slot);
   }
 
-  drop(event: CdkDragDrop<Entry[]>) {
+  drop(event: CdkDragDrop<string[]>) {
     const sourceGroupIndex = this.groupStoreService.idToIndex(event.previousContainer.id);
     const targetGroupIndex = this.groupStoreService.idToIndex(event.container.id);
     if (sourceGroupIndex == null || targetGroupIndex == null) {
@@ -154,7 +153,7 @@ export class AppComponent implements OnInit, OnDestroy {
   removePerson(groupIndex: number, entryIndex: number): void {
     const dialogRef = this.matDialog.open(ConfirmationDialogComponent, {
       data: {
-        title: this.translocoService.translate("common.confirmRemoval", { name: this.groupStoreService.getEntry(groupIndex, entryIndex)?.name }),
+        title: this.translocoService.translate("common.confirmRemoval", { name: this.groupStoreService.getEntry(groupIndex, entryIndex) }),
         cancel: this.translocoService.translate("common.cancel"),
         confirm: this.translocoService.translate("common.remove"),
       },
@@ -179,7 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.groupStoreService.addEntry(groupIndex, { name: result });
+        this.groupStoreService.addEntry(groupIndex, result);
       }
     });
   }

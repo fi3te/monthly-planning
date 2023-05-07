@@ -1,10 +1,9 @@
-import { Entry } from "./entry";
 import { formatMonth } from "./month";
 import { MonthYear } from "./month-year";
 
 export interface Group {
   date: MonthYear;
-  entries: Entry[];
+  entries: string[];
 }
 
 export function groupId(group: Group): string {

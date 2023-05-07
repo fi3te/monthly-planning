@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
-import { Entry } from '../../models/entry';
 import { Group, groupId } from '../../models/group';
 import { createMonthYear, nextMonthYear, previousMonthYear } from '../../models/month-year';
 import { SlotIdentifier } from '../../models/slot-identifier';
@@ -117,7 +116,7 @@ export class GroupStoreService {
     this.groups = [...this.groups];
   }
 
-  addEntry(groupIndex: number, entry: Entry): void {
+  addEntry(groupIndex: number, entry: string): void {
     if (!this.validGroupIndex(groupIndex)) {
       return;
     }
@@ -175,7 +174,7 @@ export class GroupStoreService {
     return index >= 0 ? index : null;
   }
 
-  getEntry(groupIndex: number, entryIndex: number): Entry | null {
+  getEntry(groupIndex: number, entryIndex: number): string | null {
     return this.validEntryIndex(groupIndex, entryIndex) ? this.groups[groupIndex].entries[entryIndex] : null;
   }
 

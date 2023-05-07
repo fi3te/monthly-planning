@@ -11,7 +11,7 @@ export function deepCopy(slot: Slot): Slot {
     identifier: slot.identifier,
     groups: [...slot.groups.map(group => ({
       date: group.date,
-      entries: [...group.entries.map(entry => ({ name: entry.name }))]
+      entries: [...group.entries]
     }))]
   };
 }

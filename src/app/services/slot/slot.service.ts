@@ -1,12 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, OperatorFunction, catchError, of } from 'rxjs';
 import { Config } from '../../models/config';
+import { createMonthYear, nextMonthYear } from '../../models/month-year';
 import { Slot, deepCopy } from '../../models/slot';
 import { SlotIdentifier } from '../../models/slot-identifier';
-import { createMonthYear, nextMonthYear } from '../../models/month-year';
-import { HttpErrorResponse } from '@angular/common/http';
-import { HttpStatusCode } from '@angular/common/http';
 import { stringToBase64 } from '../../util/base64';
 
 class DemoSlotService {
@@ -20,11 +18,11 @@ class DemoSlotService {
       groups: [
         {
           date: createMonthYear(new Date()),
-          entries: [{ name: "Hänsel" }]
+          entries: ["Hänsel"]
         },
         {
           date: nextMonthYear(createMonthYear(new Date())),
-          entries: [{ name: "Gretel" }]
+          entries: ["Gretel"]
         }
       ]
     };
