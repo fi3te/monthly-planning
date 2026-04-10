@@ -12,6 +12,6 @@ describe("fromBase64Url", () => {
   });
 
   it("should fail because of invalid format", () => {
-    expect(() => fromBase64Url("dXJsO2FkbWlu")).toThrowError();
+    expect(() => fromBase64Url("dXJsO2FkbWlu")).toThrow();
   });
 });
