@@ -12,7 +12,7 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav [mode]="isMobile() ? 'over' : 'side'" [(opened)]="opened">
-    <mat-button-toggle-group class="mp-slot-toggle-group" [vertical]="true" (change)="loadSlot($event)">
+    <mat-button-toggle-group class="mp-slot-toggle-group" [vertical]="true" [hideSingleSelectionIndicator]="true" (change)="loadSlot($event)">
       <mat-button-toggle [value]="SlotIdentifier.A" [checked]="groupStoreService.slot === SlotIdentifier.A">{{ 'common.memorySlot' | transloco }} A</mat-button-toggle>
       <mat-button-toggle [value]="SlotIdentifier.B" [checked]="groupStoreService.slot === SlotIdentifier.B">{{ 'common.memorySlot' | transloco }} B</mat-button-toggle>
     </mat-button-toggle-group>
