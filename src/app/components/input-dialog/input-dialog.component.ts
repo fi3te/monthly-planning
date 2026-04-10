@@ -9,10 +9,11 @@ export interface InputDialogData {
 }
 
 @Component({
-  selector: 'mp-input-dialog',
-  templateUrl: './input-dialog.component.html',
-  styleUrls: ['./input-dialog.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mp-input-dialog',
+    templateUrl: './input-dialog.component.html',
+    styleUrls: ['./input-dialog.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class InputDialogComponent {
 

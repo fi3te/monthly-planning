@@ -3,7 +3,8 @@ import { formatMonth } from '../../models/month';
 import { MonthYear } from '../../models/month-year';
 
 @Pipe({
-  name: 'monthYear'
+    name: 'monthYear',
+    standalone: false
 })
 export class MonthYearPipe implements PipeTransform {
 

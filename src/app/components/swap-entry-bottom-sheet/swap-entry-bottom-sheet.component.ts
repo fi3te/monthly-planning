@@ -14,10 +14,11 @@ export interface SwapEntryOutputData {
 }
 
 @Component({
-  selector: 'mp-swap-entry-bottom-sheet',
-  templateUrl: './swap-entry-bottom-sheet.component.html',
-  styleUrls: ['./swap-entry-bottom-sheet.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mp-swap-entry-bottom-sheet',
+    templateUrl: './swap-entry-bottom-sheet.component.html',
+    styleUrls: ['./swap-entry-bottom-sheet.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class SwapEntryBottomSheetComponent {
 

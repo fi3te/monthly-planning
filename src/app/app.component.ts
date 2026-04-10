@@ -19,10 +19,11 @@ import { GroupStoreService } from './services/group-store/group-store.service';
 import { SlotService } from './services/slot/slot.service';
 
 @Component({
-  selector: 'mp-app',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mp-app',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
 

@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { EditMode } from '../../models/edit-mode';
 
 @Component({
-  selector: 'mp-edit-mode-selection',
-  templateUrl: './edit-mode-selection.component.html',
-  styleUrls: ['./edit-mode-selection.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'mp-edit-mode-selection',
+    templateUrl: './edit-mode-selection.component.html',
+    styleUrls: ['./edit-mode-selection.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EditModeSelectionComponent {
   readonly EditMode = EditMode;
