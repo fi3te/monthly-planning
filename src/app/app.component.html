@@ -1,13 +1,19 @@
 <mat-toolbar class="mp-toolbar" color="primary">
-  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="!opened">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="opened">
-    <mat-icon>arrow_back</mat-icon>
-  </button>
+  @if (!opened) {
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+  @if (opened) {
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  }
   <span>{{ 'common.title' | transloco }}</span>
   <div class="mp-flex-placeholder"></div>
-  <mp-offline-chip *ngIf="!online"></mp-offline-chip>
+  @if (!online) {
+    <mp-offline-chip></mp-offline-chip>
+  }
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -31,7 +37,7 @@
     <div class="mp-content">
       <div class="mp-row mp-edit-mode-row">
         <mp-edit-mode-selection [(value)]="editMode"></mp-edit-mode-selection>
-        <ng-container *ngIf="(groupStoreService.dirty$ | async) as dirty">
+        @if ((groupStoreService.dirty$ | async); as dirty) {
           <div class="mp-flex-placeholder"></div>
           <button mat-icon-button color="accent" [disabled]="inProgress" (click)="reset()">
             <mat-icon>undo</mat-icon>
@@ -39,73 +45,84 @@
           <button mat-icon-button color="accent" [disabled]="inProgress" (click)="save()">
             <mat-icon>save</mat-icon>
           </button>
-        </ng-container>
+        }
       </div>
 
-      <div class="mp-row" *ngIf="isMonthManagement()">
-        <button mat-icon-button color="accent" (click)="groupStoreService.addGroupAtTop()">
-          <mat-icon>add</mat-icon>
-        </button>
-
-        <button mat-icon-button color="accent" (click)="groupStoreService.removeGroupAtTop()">
-          <mat-icon>remove</mat-icon>
-        </button>
-
-        <button mat-icon-button color="accent" (click)="groupStoreService.removeUnnecessaryGroups()">
-          <mat-icon>compress</mat-icon>
-        </button>
-      </div>
-
-      <div *ngFor="let group of groupStoreService.groups$ | async; let groupIndex = index">
+      @if (isMonthManagement()) {
         <div class="mp-row">
-          <h4>
-            {{ group.date | monthYear }}
-          </h4>
-          <div class="mp-flex-placeholder"></div>
-          <button mat-icon-button color="accent" (click)="addPerson(groupIndex)" *ngIf="isUserManagement()">
+          <button mat-icon-button color="accent" (click)="groupStoreService.addGroupAtTop()">
             <mat-icon>add</mat-icon>
           </button>
+          <button mat-icon-button color="accent" (click)="groupStoreService.removeGroupAtTop()">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="groupStoreService.removeUnnecessaryGroups()">
+            <mat-icon>compress</mat-icon>
+          </button>
         </div>
+      }
 
-
-        <div
-          class="mp-entry-list"
-          [id]="groupStoreService.indexToId(groupIndex)!"
-          cdkDropList
-          [cdkDropListData]="group.entries"
-          [cdkDropListConnectedTo]="(groupStoreService.ids$ | async) || []"
-          [cdkDropListDisabled]="!isPlanning()"
-          (cdkDropListDropped)="drop($event)">
-          <div class="mp-entry-item" *ngFor="let entry of group.entries; let entryIndex = index" cdkDrag>
-            <div class="mp-entry-item-drag-handle" *ngIf="isPlanning()">
-              <mat-icon color="accent" fontIcon="drag_handle" cdkDragHandle></mat-icon>
-            </div>
-            <div>
-              {{ entry }}
-            </div>
+      @for (group of groupStoreService.groups$ | async; track group; let groupIndex = $index) {
+        <div>
+          <div class="mp-row">
+            <h4>
+              {{ group.date | monthYear }}
+            </h4>
             <div class="mp-flex-placeholder"></div>
-            <div>
-              <button mat-icon-button color="accent" (click)="removePerson(groupIndex, entryIndex)" *ngIf="isUserManagement()">
-                <mat-icon>remove</mat-icon>
+            @if (isUserManagement()) {
+              <button mat-icon-button color="accent" (click)="addPerson(groupIndex)">
+                <mat-icon>add</mat-icon>
               </button>
-              <button mat-icon-button color="accent" (click)="swapEntry(groupIndex, entryIndex)" *ngIf="isPlanning()">
-                <mat-icon>swap_vert</mat-icon>
-              </button>
-            </div>
-            <div *cdkDragPlaceholder></div>
+            }
+          </div>
+          <div
+            class="mp-entry-list"
+            [id]="groupStoreService.indexToId(groupIndex)!"
+            cdkDropList
+            [cdkDropListData]="group.entries"
+            [cdkDropListConnectedTo]="(groupStoreService.ids$ | async) || []"
+            [cdkDropListDisabled]="!isPlanning()"
+            (cdkDropListDropped)="drop($event)">
+            @for (entry of group.entries; track entry; let entryIndex = $index) {
+              <div class="mp-entry-item" cdkDrag>
+                @if (isPlanning()) {
+                  <div class="mp-entry-item-drag-handle">
+                    <mat-icon color="accent" fontIcon="drag_handle" cdkDragHandle></mat-icon>
+                  </div>
+                }
+                <div>
+                  {{ entry }}
+                </div>
+                <div class="mp-flex-placeholder"></div>
+                <div>
+                  @if (isUserManagement()) {
+                    <button mat-icon-button color="accent" (click)="removePerson(groupIndex, entryIndex)">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  }
+                  @if (isPlanning()) {
+                    <button mat-icon-button color="accent" (click)="swapEntry(groupIndex, entryIndex)">
+                      <mat-icon>swap_vert</mat-icon>
+                    </button>
+                  }
+                </div>
+                <div *cdkDragPlaceholder></div>
+              </div>
+            }
           </div>
         </div>
-      </div>
+      }
 
-      <div class="mp-row" *ngIf="isMonthManagement()">
-        <button mat-icon-button color="accent" (click)="addGroupAtBottom()">
-          <mat-icon>add</mat-icon>
-        </button>
-
-        <button mat-icon-button color="accent" (click)="groupStoreService.removeGroupAtBottom()">
-          <mat-icon>remove</mat-icon>
-        </button>
-      </div>
+      @if (isMonthManagement()) {
+        <div class="mp-row">
+          <button mat-icon-button color="accent" (click)="addGroupAtBottom()">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="groupStoreService.removeGroupAtBottom()">
+            <mat-icon>remove</mat-icon>
+          </button>
+        </div>
+      }
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
