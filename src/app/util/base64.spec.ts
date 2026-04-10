@@ -20,6 +20,6 @@ describe("base64 <-> base64Url", () => {
   });
 
   it("should fail because of invalid base64url", () => {
-    expect(() => base64UrlToBase64("SGFsb")).toThrowError();
+    expect(() => base64UrlToBase64("SGFsb")).toThrow();
   });
 });
