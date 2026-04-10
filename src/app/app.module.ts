@@ -22,54 +22,56 @@ import { InputDialogComponent } from './components/input-dialog/input-dialog.com
 import { SwapEntryBottomSheetComponent } from './components/swap-entry-bottom-sheet/swap-entry-bottom-sheet.component';
 import { MonthYearPipe } from './pipes/month-year/month-year.pipe';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppTranslocoModule } from './app-transloco.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { OfflineChipComponent } from './components/offline-chip/offline-chip.component';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    EditModeSelectionComponent,
-    SwapEntryBottomSheetComponent,
-    MonthYearPipe,
-    ConfirmationDialogComponent,
-    InputDialogComponent,
-    OfflineChipComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    DragDropModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatButtonToggleModule,
-    MatBottomSheetModule,
-    MatListModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatChipsModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatSidenavModule,
-    MatExpansionModule,
-    FormsModule,
-    RouterModule.forRoot([]),
-    HttpClientModule,
-    AppTranslocoModule,
-  ],
-  providers: [
-    {
-      provide: MAT_DIALOG_DEFAULT_OPTIONS,
-      useValue: {
-        disableClose: true,
-        width: "90vw",
-        maxWidth: "480px"
-      }
-    }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        EditModeSelectionComponent,
+        SwapEntryBottomSheetComponent,
+        MonthYearPipe,
+        ConfirmationDialogComponent,
+        InputDialogComponent,
+        OfflineChipComponent
+    ],
+    bootstrap: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        DragDropModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatButtonToggleModule,
+        MatBottomSheetModule,
+        MatListModule,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatSidenavModule,
+        MatExpansionModule,
+        FormsModule,
+        RouterModule.forRoot([]),
+        AppTranslocoModule
+    ],
+    providers: [
+        {
+            provide: MAT_DIALOG_DEFAULT_OPTIONS,
+            useValue: {
+                disableClose: true,
+                width: "90vw",
+                maxWidth: "480px"
+            }
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
 export class AppModule { }
