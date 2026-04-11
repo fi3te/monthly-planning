@@ -17,6 +17,7 @@ import { EditMode } from './models/edit-mode';
 import { SlotIdentifier } from './models/slot-identifier';
 import { GroupStoreService } from './services/group-store/group-store.service';
 import { SlotService } from './services/slot/slot.service';
+import { AVAILABLE_LANGS, DEFAULT_LANG } from './app-transloco.module';
 
 @Component({
     selector: 'mp-app',
@@ -62,6 +63,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const browserLang = navigator.language.split('-')[0];
+    const langToUse = AVAILABLE_LANGS.includes(browserLang)
+      ? browserLang
+      : DEFAULT_LANG;
+    this.translocoService.setActiveLang(langToUse);
+    
     this.reload$.pipe(
       debounceTime(100),
       switchMap((slot) => slot

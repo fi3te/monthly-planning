@@ -8,6 +8,8 @@ import {
 import { Injectable, isDevMode, NgModule } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
+export const AVAILABLE_LANGS = ['en', 'de'];
+export const DEFAULT_LANG = 'en';
 
 @Injectable({ providedIn: 'root' })
 export class TranslocoHttpLoader implements TranslocoLoader {
@@ -23,8 +25,8 @@ export class TranslocoHttpLoader implements TranslocoLoader {
   providers: [
     ...provideTransloco({
       config: {
-        availableLangs: ['en', 'de'],
-        defaultLang: 'de',
+        availableLangs: AVAILABLE_LANGS,
+        defaultLang: DEFAULT_LANG,
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
       },
